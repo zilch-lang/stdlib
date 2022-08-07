@@ -1,0 +1,10 @@
+# Rift local directory
+.rift/
+
+# Unix object files/executables
+*.o
+*.out
+
+# Windows object files/executables
+*.a
+*.exe
