@@ -4,7 +4,7 @@ let Cfg =
 
 let Project = Cfg.Project
 
-let Version = Cfg.Version
+let Version = Cfg.VersionRange
 
 let Component = Cfg.Component
 
