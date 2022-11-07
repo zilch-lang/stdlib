@@ -1,0 +1,40 @@
+open import data∷unit∷multiplicative
+import data∷function∷{_<<<_, _<<<₂_}
+import data∷string∷{append}
+open import system∷handle
+
+public
+effect console ≔
+  val @1 puts : (handle, @1 str) → unit⊗
+
+public open console 
+
+#attributes(
+  import(c, "fputs_")
+)
+val c-fputs : {@0 ρ : region} → handle → ptr(ρ, char) → unit⊗
+
+#attributes(handler)
+public
+let std-console{@0 A, @0 ε}(@1 act : unit⊗ → ⟨console | ε⟩ A) : ε A ≔
+  with console 
+    let puts(h, @1 msg) ≔ consume c-fputs(&h, msg∷raw) in resume()
+  act()
+
+--------
+
+let putstr : str → console unit⊗ ≔ puts(stdout)
+
+let putstrln : str → console unit⊗ ≔ puts(stdout) <<< append("\n")
+
+let hputstr : (handle, str) → console unit⊗ ≔ puts
+
+let hputstrln : (handle, str) → console unit⊗ ≔ puts <<<₂ append("\n")
+
+let print{@0 A}⦃to-string(A)⦄ : A → console unit⊗ ≔ puts(stdout) <<< to-str
+
+let println{@0 A}⦃to-string(A)⦄ : A → console unit⊗ ≔ puts(stdout) <<< append("\n") <<< to-str
+
+let hprint{@0 A}⦃to-string(A)⦄ : (handle, A) → console unit⊗ ≔ puts <<<₂ to-str
+
+let hprintln{@0 A}⦃to-string(A)⦄ : (handle, A) → console unit⊗ ≔ puts <<<₂ (append("\n") <<< to-str)

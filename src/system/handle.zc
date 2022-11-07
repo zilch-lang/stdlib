@@ -1,0 +1,18 @@
+open import data∷typ
+
+opaque val @0 FILE : type₀
+
+public
+val @0 handle : ptr(FOREIGN, FILE)
+
+#attributes(
+  import(c, "stdout")
+)
+val stdout : handle
+
+#attributes(
+  import(c, "stderr")
+)
+val stderr : handle
+
+let stdlog ≔ stderr

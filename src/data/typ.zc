@@ -1,0 +1,16 @@
+/-
+  Can't name this module `data∷type` because `type` is a reserved word.
+-/
+
+/--
+  A convenient alias for `type(0)`.
+-/
+let @0 type₀ ≔ type(0)
+/--
+  A convenient alias for `type(1)`.
+-/
+let @0 type₁ ≔ type(1)
+/--
+  A convenient alias for `type(2)`.
+-/
+let @0 type₂ ≔ type(2)

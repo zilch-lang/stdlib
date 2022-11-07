@@ -1,0 +1,12 @@
+/--
+  The non-dependent function composition.
+
+  Conceptually, `(g <<< f)(x)` is equivalent to applying `f` to `x`, and then applying `g` to the result.
+  In terms of notation, `(g <<< f)(x) ≡ g(f(x))`.
+-/
+public
+let _<<<_{@0 A, @0 B, @0 C}(@1 g : @p B → C, @1 f : @q A → B) : @q A → C ≔ 
+  λ(@q x) ⇒ g(f(x))
+
+public
+notation "g <<< f" ≔ _<<<_(g, f)

@@ -1,0 +1,8 @@
+/-
+public
+record @0 ptr{@0 l}(@0 ρ : region, @0 type(l)) : type(l) ≔
+  val addr : addr#(ρ)
+-/
+
+notation "* a @ ρ" ≔ ptr(ρ, a)
+notation "^ a" ≔ ptr(FOREIGN, a)

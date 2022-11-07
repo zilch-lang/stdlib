@@ -1,0 +1,47 @@
+open import data∷unit∷multiplicative
+open import system∷{console, exit}
+open import data∷typ
+
+/--
+  The effect as a tag for partial functions, that is functions which only partially handle their input domain.
+-/
+public
+effect partial ≔
+  /--
+    End the current computation, and provide a message (as a `str`) to tell what happened wrong.
+    Handlers may choose to ignore the message.
+    In general, this will be a literal string, but this is not necessary.
+
+    This function conceptually returns `⊥` (encoded as `{0 A} → A`).
+    The only possible way to do that in Zilch is through early program termination, or non-termination.
+    
+    To handle this function, you can either use functions in the `system∷exit` module, or return this function:
+    ```
+    rec loop{0 A}() : A ≔ loop()
+    ```
+  -/
+  val @1 error{@0 A : type₀} : str → A
+
+/-
+  We don't want to allow people to handle this effect directly.
+  As such, we only export `partial` as well as `error : {0 A} → str → partial A`.
+
+  Because `error` is exported alone (as in scope of `partial`), it cannot be handled explicitly outside this module.
+-/
+public open partial
+
+/--
+  A notation similar to functions to also express partiality.
+  This notation is heavily inspired by Event-B's notation of partial mappings.
+-/
+public
+notation "(σ x : A) ⇸ ε B" ≔ (σ x : A) → ⟨partial | ε⟩ B
+
+#attributes(handler)
+public
+let unsafe-partial{@0 A, @0 ε}(@1 act : unit⊗ ⇸ ε A) : ⟨console,exit | ε⟩ A ≔
+  with partial
+    let @1 error(msg) ≔
+      let () ≔ println(msg)
+      exit-failure()
+  act()

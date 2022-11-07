@@ -1,0 +1,10 @@
+open import foreign∷mem
+open import data∷typ
+
+record string {@0 ρ : region} : type₀ ≔
+  val raw : ptr(ρ, char)
+  val len : u64
+
+public
+let @0 c-string ≔ ptr(FOREIGN, char)
+

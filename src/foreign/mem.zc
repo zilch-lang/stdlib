@@ -1,0 +1,16 @@
+open import data∷unit∷multiplicative
+open import data∷ptr
+open import data∷typ
+
+#attributes(
+  import(c, "free")
+)
+public
+val c-free : (@1 _ : ^ char) → unit⊗
+
+#attributes(
+  import(c, "malloc")
+)
+public
+val c-malloc : {@0 A : type₀} → u64 → ^ A
+

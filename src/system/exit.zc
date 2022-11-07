@@ -1,0 +1,19 @@
+open import data∷unit∷multiplicative
+
+#attributes(
+  import(c, "exit")
+)
+val c-exit : s32 → unit⊗
+
+public
+let exit{@0 A}(code : s32) : A ≔
+  rec loop() : A ≔ loop()
+  let () ≔ c-exit(code)
+  -- this should not be executed, because `c-exit` already exits the current process.
+  loop()
+
+public
+let exit-success{@0 A}() : A ≔ exit(0)
+
+public 
+let exit-failure{@0 A}() : A ≔ exit(1)
