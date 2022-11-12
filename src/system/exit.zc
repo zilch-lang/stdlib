@@ -1,19 +1,76 @@
 open import data∷unit∷multiplicative
 
+public 
+effect exit ≔
+  /--
+    Indicates that we are willing to exit the current process.
+    Handlers do not need to exit immediately.
+
+    Note that a value of any type is returned. 
+    In Zilch, it is possible to obtain such value only through non-termination (or by finding bugs in the compiler...).
+    Handlers may use the following function to be returned from `exit-with-code`:
+    ```
+    rec loop() : A ≔ loop()
+    ```
+  -/
+  val exit-with-code{@0 A} : s32 → A
+
+public 
+open exit
+
+/--
+  Libc's `exit` function.
+-/
 #attributes(
   import(c, "exit")
 )
 val c-exit : s32 → unit⊗
 
-public
-let exit{@0 A}(code : s32) : A ≔
-  rec loop() : A ≔ loop()
+let exit´{@0 A}(code : s32) : A ≔
+  /-
+    All this could also be written as:
+    ```
+    let () ≔ c-exit(code)
+    rec loop : A ≔ loop
+    loop
+    ```
+
+    Because Zilch is strict, `loop` will be executed right away, at the site of its definition.
+    Not that it matters, because `c-exit` will exit the process anyway.
+  -/
   let () ≔ c-exit(code)
+  rec loop() : A ≔ loop()
   -- this should not be executed, because `c-exit` already exits the current process.
   loop()
 
-public
-let exit-success{@0 A}() : A ≔ exit(0)
-
+/--
+  The default (and only) handler for the `exit` effect.
+  This handlers exits the process immediately when using `exit-with-code`.
+-/
+#attributes(inline)
 public 
-let exit-failure{@0 A}() : A ≔ exit(1)
+let std-exit{@0 A, @0 ε}(@1 act : unit⊗ → ⟨exit | ε⟩ A) : ε A ≔
+  with exit
+		let exit-with-code ≔ exit´ 
+  act()
+
+/--
+  Exit the current process while indicating a success.
+  In C, this would be done like `exit(EXIT_SUCCESS)` using the standard `EXIT_SUCCESS` macro (which is usually `0`).
+
+  The effect `exit` is used because this action is impure.
+-/
+#attributes(inline)
+public
+let exit-success{@0 A}() : exit A ≔ exit´(0)
+
+/--
+  Exit the current process while indicating a failure.
+  In C, this would be done like `exit(EXIT_FAILURE)` using the standard `EXIT_FAILURE` macro 
+  (which is usually `1`, but it only needs to be different from `0`).
+
+  The effect `exit` is used because this action is impure.
+-/
+#attributes(inline)
+public 
+let exit-failure{@0 A}() : exit A ≔ exit´(1)

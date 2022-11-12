@@ -1,0 +1,29 @@
+import data∷unit∷multiplicative∷{unit⊗}
+import system∷console∷{console, std-console}
+import system∷exit∷{exit, std-exit}
+
+/--
+  Handles the most common effects, namely `console` and `exit`, with standard uses.
+  
+  - The `console` effect is handled with `std-console`, which outputs onto the standard file descriptors (`stdout` and `stderr`);
+  - The `exit` effect is handled with `std-exit`, which immediately aborts the current process upon calling `exit-with-code`.
+
+  This is rather useful when defining the `main` function, as either 
+  ```zilch
+  let main() ≔
+    with default-effects
+    ?todo
+  ```
+  or
+  ```zilch
+  let main´() ≔ ?todo
+  #attributes(inline)
+  let main() ≔ default-effects(main´)
+  ```
+-/
+public
+let default-effects{@0 ε, @0 A}(@1 act : unit⊗ → ⟨console, exit | ε⟩ A) : ε A ≔
+  with std-console
+  with std-exit
+
+  act()

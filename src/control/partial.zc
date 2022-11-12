@@ -37,7 +37,7 @@ public open partial
 public
 notation "(σ x : A) ⇸ ε B" ≔ (σ x : A) → ⟨partial | ε⟩ B
 
-#attributes(handler)
+#attributes(inline)
 public
 let unsafe-partial{@0 A, @0 ε}(@1 act : unit⊗ ⇸ ε A) : ⟨console,exit | ε⟩ A ≔
   with partial

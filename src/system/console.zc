@@ -7,14 +7,15 @@ public
 effect console ≔
   val @1 puts : (handle, @1 str) → unit⊗
 
-public open console 
+public 
+open console 
 
 #attributes(
   import(c, "fputs_")
 )
 val c-fputs : {@0 ρ : region} → handle → ptr(ρ, char) → unit⊗
 
-#attributes(handler)
+#attributes(inline)
 public
 let std-console{@0 A, @0 ε}(@1 act : unit⊗ → ⟨console | ε⟩ A) : ε A ≔
   with console 
