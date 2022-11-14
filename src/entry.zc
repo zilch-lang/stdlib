@@ -1,4 +1,4 @@
-import data∷unit∷multiplicative∷{unit⊗}
+import data∷unit∷{unit}
 import system∷console∷{console, std-console}
 import system∷exit∷{exit, std-exit}
 
@@ -22,7 +22,7 @@ import system∷exit∷{exit, std-exit}
   ```
 -/
 public
-let default-effects{@0 ε, @0 A}(@1 act : unit⊗ → ⟨console, exit | ε⟩ A) : ε A ≔
+let default-effects{@0 ε, @0 A}(@1 act : unit → ⟨console, exit | ε⟩ A) : ε A ≔
   with std-console
   with std-exit
 

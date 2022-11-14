@@ -1,2 +1,22 @@
-public open import data∷unit∷multiplicative
-public open import data∷unit∷additive
+/--
+  A convenient alias for `𝟏`, which isn't always easy to type.
+-/
+let @0 unit ≔ 𝟏
+
+/--
+  Allows to consume a `unit⊗` as a simple convenient function.
+  Operationnally, `consume x in do f` is equivalent to (but is expressed more concisely):
+  ```
+  let () ≔ x
+  do f
+  ```
+-/
+#attributes(inline)
+let consume_in_{@0 A}(@1 x : unit, @1 f : unit → A) ≔
+  let () ≔ x
+  f()
+  -- NOTE: this can't be written `f(x)`, because `x` is linear but the argument of `f` is unrestricted.
+
+public 
+notation "consume x in f" ≔ consume_in_(x, f)
+

@@ -1,4 +1,4 @@
-open import data∷unit∷multiplicative
+open import data∷unit
 
 public 
 effect exit ≔
@@ -24,12 +24,12 @@ open exit
 #attributes(
   import(c, "exit")
 )
-val c-exit : s32 → unit⊗
+val c-exit : s32 → unit
 
 let exit´{@0 A}(code : s32) : A ≔
   /-
     All this could also be written as:
-    ```
+    ```zilch
     let () ≔ c-exit(code)
     rec loop : A ≔ loop
     loop
@@ -49,9 +49,9 @@ let exit´{@0 A}(code : s32) : A ≔
 -/
 #attributes(inline)
 public 
-let std-exit{@0 A, @0 ε}(@1 act : unit⊗ → ⟨exit | ε⟩ A) : ε A ≔
+let std-exit{@0 A, @0 ε}(@1 act : unit → ⟨exit | ε⟩ A) : ε A ≔
   with exit
-		let exit-with-code ≔ exit´ 
+		let exit-with-code(code) ≔ exit´(code)
   act()
 
 /--

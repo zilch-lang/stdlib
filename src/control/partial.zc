@@ -16,7 +16,7 @@ effect partial ≔
     The only possible way to do that in Zilch is through early program termination, or non-termination.
     
     To handle this function, you can either use functions in the `system∷exit` module, or return this function:
-    ```
+    ```zilch
     rec loop{0 A}() : A ≔ loop()
     ```
   -/
@@ -39,7 +39,7 @@ notation "(σ x : A) ⇸ ε B" ≔ (σ x : A) → ⟨partial | ε⟩ B
 
 #attributes(inline)
 public
-let unsafe-partial{@0 A, @0 ε}(@1 act : unit⊗ ⇸ ε A) : ⟨console,exit | ε⟩ A ≔
+let unsafe-partial{@0 A, @0 ε}(@1 act : unit ⇸ ε A) : ⟨console,exit | ε⟩ A ≔
   with partial
     let @1 error(msg) ≔
       let () ≔ println(msg)

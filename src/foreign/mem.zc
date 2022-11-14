@@ -1,4 +1,4 @@
-open import data∷unit∷multiplicative
+import data∷unit∷{unit}
 open import data∷ptr
 open import data∷typ
 
@@ -6,7 +6,7 @@ open import data∷typ
   import(c, "free")
 )
 public
-val c-free : (@1 _ : ^ char) → unit⊗
+val c-free : (@1 _ : ^ char) → unit
 
 #attributes(
   import(c, "malloc")
